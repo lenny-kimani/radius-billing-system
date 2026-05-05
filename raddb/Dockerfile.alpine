@@ -1,0 +1,13 @@
+FROM alpine:3.19
+
+# Install FreeRADIUS and MySQL module
+RUN apk add --no-cache freeradius freeradius-mysql freeradius-utils
+
+# Enable SQL and SQLCounter modules
+RUN ln -s /etc/raddb/mods-available/sql /etc/raddb/mods-enabled/sql
+RUN ln -s /etc/raddb/mods-available/sqlcounter /etc/raddb/mods-enabled/sqlcounter
+
+EXPOSE 1812/udp 1813/udp 3799/udp
+
+# Run FreeRADIUS in foreground
+CMD ["radiusd", "-f"]

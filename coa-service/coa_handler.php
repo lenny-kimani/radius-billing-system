@@ -42,37 +42,33 @@ if (!empty($attributes)) {
     }
 }
 
-// Determine the command type
+// Determine the command type (Whitelist)
 $commandType = ($type === 'disconnect') ? 'disconnect' : 'coa';
 error_log('Command Type: ' . $commandType);
-error_log('Attributes: ' . json_encode($attributes));
 
-// Construct the radclient command
-$command = "echo '$attrString' | radclient -x {$nasIp}:3799 $commandType $secret";
-// dumpt above command into the console
-print_r($command);
+// Construct the radclient command with sanitization
+$safeAttrString = escapeshellarg($attrString);
+$safeNasIp = escapeshellarg($nasIp);
+$safeSecret = escapeshellarg($secret);
+
+$command = "echo $safeAttrString | radclient -x {$safeNasIp}:3799 $commandType $safeSecret";
 
 // Execute the command
 exec($command, $output, $returnVar);
 
-// Build the response
+// Build the response (Removed sensitive command)
 $response = [
     'success' => ($returnVar === 0),
-    'output' => $output,
-    'command' => $command
+    'output' => $output
 ];
 
 // Log the result
 if ($returnVar === 0) {
     error_log("RADIUS $commandType successful for user: $username");
 } else {
-    error_log($command);
-    error_log('\n');
-    error_log($output);
-    error_log('\n');
-    error_log($returnVar);
-    error_log('\n');
-    error_log("RADIUS $commandType failed for user: $username: " . implode("\n", $output));
+    // Log minimal info for debugging, avoid logging $command which contains $secret
+    error_log("RADIUS $commandType failed for user: $username. Return code: $returnVar");
+    error_log("Output: " . implode("\n", $output));
 }
 
 // Return the result

@@ -1,17 +1,24 @@
 # WiFi Billing System with M-pesa Integration
 
-An MVP setup for Hotspot Billing using PHPNuxBill and FreeRADIUS
+An MVP setup for Hotspot Billing using PHPNuxBill and FreeRADIUS. Optimized for K3s and Alpine Linux with production-grade M-Pesa integration.
+
+## 📚 Official Documentation
+For detailed architecture, security, and setup guides, please refer to the **[Documentation Folder](documentation/README.md)**:
+*   **[Setup & Preconfiguration](documentation/setup.md)**
+*   **[Optimized Alpine Architecture](documentation/architecture.md)**
+*   **[Mikrotik L2TP VPN Guide](documentation/mikrotik-vpn.md)**
+*   **[Security Hardening Report](documentation/security-audit.md)**
 
 ## Quick Start
 
 1. Clone this repository
 ```bash
-git clone --recursive git@github.com:reduzersolutions/radius-billing-system.git
+git clone --recursive https://github.com/lenny-kimani/radius-billing-system.git
 ```
 2. Create a src folder at the root directory and clone this repository inside the src folder
 
 ```bash
-git clone git@github.com:reduzersolutions/phpnuxbill.git .
+git clone https://github.com/reduzersolutions/phpnuxbill.git .
 
 ```
 
@@ -42,7 +49,10 @@ docker-compose up -d
 ## Initial Setup
 
 ### 1. PHPNuxBill Installation
-1. Open your browser and navigate to `http://localhost`
+1.  Open your browser and navigate to:
+    *   **Local**: `http://localhost`
+    *   **Remote/K3s**: `http://your-domain.com`
+    *   **Cloudflare Tunnel**: `https://your-tunnel-name.cloudflare.com`
 2. Follow the PHPNuxBill installation wizard
 3. Once logged in, go to:
     - Settings → General Settings → FreeRADIUS
