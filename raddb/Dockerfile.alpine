@@ -3,9 +3,12 @@ FROM alpine:3.19
 # Install FreeRADIUS and MySQL module
 RUN apk add --no-cache freeradius freeradius-mysql freeradius-utils
 
+# Create freerad user and group
+RUN addgroup -S freerad && adduser -S -G freerad freerad && addgroup freerad radius
+
 # Enable SQL and SQLCounter modules
-RUN ln -s /etc/raddb/mods-available/sql /etc/raddb/mods-enabled/sql
-RUN ln -s /etc/raddb/mods-available/sqlcounter /etc/raddb/mods-enabled/sqlcounter
+RUN ln -sf /etc/raddb/mods-available/sql /etc/raddb/mods-enabled/sql
+RUN ln -sf /etc/raddb/mods-available/sqlcounter /etc/raddb/mods-enabled/sqlcounter
 
 EXPOSE 1812/udp 1813/udp 3799/udp
 
